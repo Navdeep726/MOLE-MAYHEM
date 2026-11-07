@@ -34,7 +34,7 @@ int main(){
      char n[50];
      register_p(n);
      printf("%s",n);
-     //FILE *ptr;
+     //FILE *ptr;timepass
      //ptr=fopen("players_details.txt","a");
      //fprintf(ptr,"username\t password\t email\n");
      //fprintf(ptr,"%s\t%s\t%s",p1.username,p1.password,p1.mail);
