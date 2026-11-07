@@ -1,2 +1,7 @@
-username	 password	 email
-priyanshi	pp@1234	thepriyanshi2008
+username password email
+NAVDEEP	ABHDJCHSD	HFAJKRHFusername password email
+navdeep	fhywrukaf	fhasuihusername password email
+navdeep	hjdnkjed	ashkjdbhjausername password email
+navdeep	abcd123	hvjafbfavnavdeep navdeep navdeep
+username password email
+navfeep	123456	nvdc
