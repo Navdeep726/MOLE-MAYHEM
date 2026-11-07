@@ -4,30 +4,39 @@ typedef struct {
     char username[100];
     char password[50];
     char mail[100];
-}player_info;
+}pi;
  typedef struct {
     char username[100];
     int score;
-}player_scores;
+}ps;
 void register_p(char *name){
+     pi p1;
      char username[50],password[50], email[50];
-     printf("enter username");
-     scanf("%s",&username);
-     printf("set password");
-     scanf("%s",&password);
+     printf("enter username without space ");
+     scanf("%s",&p1.username);
+     printf("set password without space");
+     scanf("%s",&p1.password);
      printf("enter mail");
-     scanf("%s",&email);
+     scanf("%s",&p1.mail);
      printf("*************************\nTIME TO SMASHHHHHHHH!!!!!!!\n");
-     strcpy(name,username);
+     strcpy(name,p1.username);
+     //to store the player information in file.
+     FILE *ptr;
+     ptr=fopen("players_details.txt","w");
+     fprintf(ptr,"username\t password\t email\n");
+     fprintf(ptr,"%s\t%s\t%s",p1.username,p1.password,p1.mail);
+     fclose(ptr);
 
 }
 int main(){
+     pi p1;
+     ps p2;
      char n[50];
      register_p(n);
      printf("%s",n);
-
-
-
-
-
+     //FILE *ptr;
+     //ptr=fopen("players_details.txt","a");
+     //fprintf(ptr,"username\t password\t email\n");
+     //fprintf(ptr,"%s\t%s\t%s",p1.username,p1.password,p1.mail);
+     //fclose(ptr);
 }
