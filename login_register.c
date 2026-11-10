@@ -104,12 +104,12 @@ int login_p(char *name)
     printf("invalid credentials try again\n");
     return login_p(name);
 }
-
+void display_score(char *username,int scr);
 int main(void)
 {
     char n[100];
     int c;
-    printf("enter 1 to register\nenter 2 to login\nenter 3 to quit\n");
+    printf("enter 1 to register\nenter 2 to login\nenter 3 to quit\nenter 4 to display score");
     scanf("%d",&c);
     switch(c){
         case 1:
@@ -122,7 +122,34 @@ int main(void)
             break;
         case 3:
             break;
+        case 4:
+            {char u[20];
+            printf("enter your username:");
+            scanf("%19s",&u);
+            int score;
+            scanf("%d",&score);
+            display_score(u,score);
+            break;}
+        
     }
     printf("thank you");
     return 0;
 }
+void display_score(char *username,int scr){
+    FILE *ptr;
+    ptr=fopen("player_scores.txt","r+");
+    ps p1;
+    while(fscanf(ptr,"%s\n",p1.username)==1){
+        printf("hiii");
+        if(strcmp(p1.username,username)==0){
+            printf("your scores are: ");
+            fprintf(ptr,"%d",p1.score);
+            
+        }
+        else{
+            printf("your name is not registered. please register first");
+        }
+    }
+}
+
+
