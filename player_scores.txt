@@ -1,2 +1,9 @@
-surbhi 10 00 20 
-navdeep 10 30 50
+surbhi 100
+navdeep 500
+surbhi 300
+priyanshi 400
+priyanshi 400
+surbhi 500
+navdeep 600
+mayank 400
+mayank 400
