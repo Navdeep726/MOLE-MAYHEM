@@ -2,10 +2,4 @@
 navdeep 1234 nvdc
 priyanshi 1234 pp
 surbhi shubham thesurbhi2007@gmail.com
-cd "c:\Users\hp\OneDrive\Documents\GitHub\MOLE-MAYHE M\";
-v cd "c:\Users\nvdcg\Documents\GitHub\MOLE-MAYHEM"
-& "C:\raylib\w64devkit\bin\gcc.exe" "login_register.c"
-"C:\raylib\w64devkit\bin\gcc.exe" "login_register.c" -o
-"login_register.exe" -I"C:\raylib\raylib\src" -L"C:\raylib\w64devkit\lib"
--mconsole -lraylib -lopengl32
-lgdi32 -lwinmm; if
+
