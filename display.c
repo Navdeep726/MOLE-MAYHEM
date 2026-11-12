@@ -64,4 +64,5 @@ void gamebackground()
         EndDrawing();
     }
     CloseWindow();
+
 }
