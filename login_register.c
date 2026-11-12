@@ -18,12 +18,12 @@ int register_p(char *name)
 {
     pi p1;
     char m;
-    printf("enter m to go back to main screen\nenter anything else to continue: ");
-    scanf(" %c",&m);
-    if(m=='m'){
-        choice(name);
-        return 0;
-    }
+    // printf("enter m to go back to main screen\nenter anything else to continue: ");
+    // scanf(" %c",&m);
+    // if(m=='m'){
+    //     choice(name);
+    //     return 0;
+    // }
     // input details
     printf("Enter username without space: ");
     scanf(" %99s", p1.username);
@@ -43,8 +43,18 @@ int register_p(char *name)
                 strcmp(p1.mail, p2.mail) == 0)
             {
                 printf("Username or mail already registered.\n");
-                fclose(fp);               
-                return register_p(name);// recursive call if username already registered
+                fclose(fp); 
+                printf("enter m to go back to main screen\nenter anything else to continue: ");
+                scanf(" %c",&m);
+                if(m=='m'){
+                    choice(name);
+                    return 0;
+                }    
+                else{
+                    return register_p(name);// recursive call if username already registered
+
+                }            
+                
                 
             }
         }
@@ -80,13 +90,7 @@ void show_all_players(void)
 int login_p(char *name)
 {
     pi p1;
-    char m;
-    printf("enter m to go back to main screen\nenter anything else to continue ");
-    scanf(" %c",&m);
-    if(m=='m'){
-        choice(name);
-        return 0;
-    }
+
     // input details
     printf("Enter username without space: ");
     scanf(" %99s", p1.username);
@@ -118,12 +122,24 @@ int login_p(char *name)
 
     fclose(fp);                            
     printf("invalid credentials try again\n");
-    return login_p(name);// recursive call if details are wrong
+    char m;
+    printf("enter m to go back to main screen\nenter anything else to continue ");
+    scanf(" %c",&m);
+    if(m=='m'){
+        choice(name);
+        return 0;
+    }
+    else{
+        return login_p(name);
+
+    }
+    
+    ;// recursive call if details are wrong
 }
 void display_score(char name[100]){
     FILE *fp;
     char username[100];
-    int found=0,score;
+    int found=0,score,h_score;
     fp=fopen("player_scores.txt","r");
     if (fp==NULL){
         printf("unable to open file.");
@@ -131,6 +147,10 @@ void display_score(char name[100]){
     }
     printf("your previous scores are:\n");
     while(fscanf(fp," %99s %d",username,&score)==2){
+        h_score=score;
+        if(score>h_score){
+            h_score=score;
+        }
         if (strcmp(username,name)==0){
             printf("%d\n",score);
             found=1;
@@ -167,13 +187,46 @@ void choice(char *n){
         
     }
 }
+int player_highest(char *player);
+int highest();
 
 int main(void)
 {
-    char n[100];
-    choice(n);
-    printf("thank you");
+    //char n[100];
+    //choice(n);
+    //printf("thank you");
+    int i;
+    i=highest();
+    printf("%d",i);
     return 0;
+    
 }
+int player_highest(char player[]){
+    FILE *ptr=fopen("player_scores.txt","r");
+    char ply[100];
+    int scr;
+    int high_s=0;
+    while(fscanf(ptr,"%99s %d",ply,&scr)==2){
+        if(strcmp(player,ply)==0){
+            if(scr>high_s){
+                high_s=scr;
+            }
+        }
+    }
+    fclose(ptr);
+    return high_s;
+}
+int highest(){
+    char players[100];
+    int scr;
+    int h1,h2,h3;
+    FILE *ptr=fopen("player_scores.txt","r");
+    while(fscanf(ptr,"%99s %d",players,&scr)==2){
+        scr=player_highest(players);
+    }
+    return scr;
+    fclose(ptr);
+}
+
 
 
