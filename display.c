@@ -1,11 +1,23 @@
 #include "raylib.h"
 #include <stdio.h>
 void mainscreen();
-void gamebackground();
+void gamebackground(int n);
 
 int main()
 {
-    gamebackground();
+    int a;
+    printf("enter a: ");
+    scanf("%d", &a);
+    switch(a)
+    {
+        case 2:
+            gamebackground(a);
+            break;
+        case 3:
+            gamebackground(a);
+            break;
+    }
+
 
     return 0;
 }
@@ -13,7 +25,7 @@ int main()
 void mainscreen()
 
 {
-    InitWindow(2000, 1500, "MOLE MAYHEM");
+    InitWindow(1920, 1200, "MOLE MAYHEM");
 
     while (!WindowShouldClose())
     {
@@ -34,10 +46,12 @@ void mainscreen()
 
     CloseWindow();
 }
-void gamebackground()
+void gamebackground(int n)
 
 {
-    InitWindow(2000, 1500, "MOLE MAYHEM");
+    InitWindow(1600, 1000, "MOLE MAYHEM");
+
+    SetTargetFPS(60);
 
     while (!WindowShouldClose())
     {
@@ -45,24 +59,23 @@ void gamebackground()
 
         ClearBackground(RAYWHITE);
 
-        Rectangle myBox =  {90, 90, 1710, 1010};
+        Texture2D background = LoadTexture("sunlightbg.png");
 
-        DrawRectangle(120, 120, 1660, 960, GREEN);
+        DrawTexture(background, 0, 0, WHITE);
 
-        DrawRectangleLinesEx(myBox, 30, YELLOW);
-
-        for(int r = 0; r < 2; r++)
+        for(int r = 0; r < n; r++)
         {
             for(int c = 0; c < 3; c++)
             {
                 int posx = 350 + (c * 400);
-                int posy = 350 + (r * 300);
-                DrawEllipse(posx + 100, posy + 50, 120, 50, GRAY);
+                int posy = 500 + (r * 200);
+                DrawCircle(posx, posy, 60, BLACK);
             }
         }
-
+        
         EndDrawing();
     }
+    
     CloseWindow();
 
 }
