@@ -203,7 +203,7 @@ int player_highest(char player[]){
         }
     }
     fclose(ptr);
-    return &high_s;
+    return high_s;
 }
 int highest(){//to find the highest score.
     char players[100];
