@@ -11,19 +11,31 @@ typedef struct {    //structure to store player scores
     char username[100];
     int score;
 } ps;
-void choice(char *n);
 
+//FUNCTION DECLARATION  
+void choice(char *n);
+int register_p(char *name);
+int login_p(char *name);
+void display_score(char name[100]);
+int player_highest(char *player);
+int highest();
+
+int main(void){
+    //char n[100];
+    //choice(n);
+    //printf("thank you");
+    int i;
+    i=highest();
+    printf("%d",i);
+    return 0;
+    
+}
 // returns 1 on success, 0 on failure
 int register_p(char *name)
 {
     pi p1;
     char m;
-    // printf("enter m to go back to main screen\nenter anything else to continue: ");
-    // scanf(" %c",&m);
-    // if(m=='m'){
-    //     choice(name);
-    //     return 0;
-    // }
+
     // input details
     printf("Enter username without space: ");
     scanf(" %99s", p1.username);
@@ -75,20 +87,7 @@ int register_p(char *name)
     return 1;
 }
 
-void show_all_players(void)
-{
-    FILE *fp = fopen("players_details.txt", "r");
-    if (fp == NULL) return;
-
-    pi p;
-    while (fscanf(fp, "%99s %49s %99s", p.username, p.password, p.mail) == 3)
-    {
-        printf("User: %s | Mail: %s\n", p.username, p.mail);
-    }
-    fclose(fp);
-}
-int login_p(char *name)
-{
+int login_p(char *name){
     pi p1;
 
     // input details
@@ -187,20 +186,9 @@ void choice(char *n){
         
     }
 }
-int player_highest(char *player);
-int highest();
 
-int main(void)
-{
-    //char n[100];
-    //choice(n);
-    //printf("thank you");
-    int i;
-    i=highest();
-    printf("%d",i);
-    return 0;
-    
-}
+
+
 int player_highest(char player[]){
     FILE *ptr=fopen("player_scores.txt","r");
     char ply[100];
@@ -211,18 +199,19 @@ int player_highest(char player[]){
             if(scr>high_s){
                 high_s=scr;
             }
+        printf("the highest score of %s is %d",ply,high_s);
         }
     }
     fclose(ptr);
-    return high_s;
+    return &high_s;
 }
-int highest(){
+int highest(){//to find the highest score.
     char players[100];
     int scr;
     int h1,h2,h3;
     FILE *ptr=fopen("player_scores.txt","r");
-    while(fscanf(ptr,"%99s %d",players,&scr)==2){
-        scr=player_highest(players);
+    while(fscanf(ptr,"%99s %d",players,scr)==2){
+        int scr=player_highest(players);
     }
     return scr;
     fclose(ptr);
