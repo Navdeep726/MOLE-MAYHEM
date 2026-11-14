@@ -211,18 +211,19 @@ int player_highest(char player[]){
             if(scr>high_s){
                 high_s=scr;
             }
+        printf("the highest score of %s is %d",ply,high_s);
         }
     }
     fclose(ptr);
-    return high_s;
+    return &high_s;
 }
 int highest(){//to find the highest score.
     char players[100];
     int scr;
     int h1,h2,h3;
     FILE *ptr=fopen("player_scores.txt","r");
-    while(fscanf(ptr,"%99s %d",players,&scr)==2){
-        scr=player_highest(players);
+    while(fscanf(ptr,"%99s %d",players,scr)==2){
+        int scr=player_highest(players);
     }
     return scr;
     fclose(ptr);
