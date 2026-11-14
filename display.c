@@ -5,18 +5,19 @@ void gamebackground(int n);
 
 int main()
 {
-    int a;
-    printf("enter a: ");
-    scanf("%d", &a);
-    switch(a)
-    {
-        case 2:
-            gamebackground(a);
-            break;
-        case 3:
-            gamebackground(a);
-            break;
-    }
+    // int a;
+    // printf("enter a: ");
+    // scanf("%d", &a);
+    // switch(a)
+    // {
+    //     case 2:
+    //         gamebackground(a);
+    //         break;
+    //     case 3:
+    //         gamebackground(a);
+    //         break;
+    // }
+    mainscreen();
 
 
     return 0;
@@ -25,21 +26,17 @@ int main()
 void mainscreen()
 
 {
-    InitWindow(1920, 1200, "MOLE MAYHEM");
+    InitWindow(1672, 941, "MOLE MAYHEM");
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
+       
+        Texture2D background = LoadTexture("menu.png");
 
         ClearBackground(RAYWHITE);
 
-        DrawRectangle(540, 90, 920, 220, RED);
-
-        DrawText("MOLE MAYHEM", 550, 100, 120, DARKGREEN);
-
-        DrawEllipse(1000, 500, 300, 50, PINK);
-
-        DrawText("START", 850, 460, 80, BLACK);
+        DrawTexture(background, 0, 0, WHITE);
 
         EndDrawing();
     }
@@ -49,7 +46,7 @@ void mainscreen()
 void gamebackground(int n)
 
 {
-    InitWindow(1600, 1000, "MOLE MAYHEM");
+    InitWindow(1672, 941, "MOLE MAYHEM");
 
     SetTargetFPS(60);
 
@@ -59,7 +56,7 @@ void gamebackground(int n)
 
         ClearBackground(RAYWHITE);
 
-        Texture2D background = LoadTexture("sunlightbg.png");
+        Texture2D background = LoadTexture("day.png");
 
         DrawTexture(background, 0, 0, WHITE);
 
