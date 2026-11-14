@@ -199,7 +199,6 @@ int player_highest(char player[]){
             if(scr>high_s){
                 high_s=scr;
             }
-        printf("the highest score of %s is %d",ply,high_s);
         }
     }
     fclose(ptr);
