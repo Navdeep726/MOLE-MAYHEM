@@ -209,7 +209,7 @@ int highest(){//to find the highest score.
     int scr;
     int h1,h2,h3;
     FILE *ptr=fopen("player_scores.txt","r");
-    while(fscanf(ptr,"%99s %d",players,scr)==2){
+    while(fscanf(ptr,"%99s %d",players,&scr)==2){
         int scr=player_highest(players);
     }
     return scr;
