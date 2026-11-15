@@ -93,7 +93,6 @@ void choose_map()
         if (CheckCollisionPointRec(mouse, areas[i]))
         {
             DrawRectangleRec(areas[i], glow);
-            DrawRectangleLinesEx(areas[i], 4, YELLOW);
 
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
