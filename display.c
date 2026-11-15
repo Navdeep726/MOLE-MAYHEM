@@ -1,101 +1,107 @@
 #include "raylib.h"
 #include <stdio.h>
+#include <string.h>
+
 void mainscreen();
-void gamebackground(int n);
-void creategame(int gamemode,int holes,int map);
+void choose_map();
+
+/* 1 main, 2 choose map, 3 choose difficulty,
+   4 game, 5 leaderboard, 6 game over */
+int currentscreen = 1;      // global so every screen can change it
+Texture2D menuBg,map_window;           // loaded once in main
+char selected_map[100];
 
 int main()
 {
-    // int a;
-    // printf("enter a: ");
-    // scanf("%d", &a);
-    // switch(a)
-    // {
-    //     case 2:
-    //         gamebackground(a);
-    //         break;
-    //     case 3:
-    //         gamebackground(a);
-    //         break;
-    // }
-    mainscreen();
+    InitWindow(1600, 900, "Whack-a-Mole");
+    SetTargetFPS(60);
 
+    menuBg = LoadTexture("menu.png");    // must come after InitWindow
+    map_window = LoadTexture("choose_map.png");
 
+    while (!WindowShouldClose())
+    {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        switch (currentscreen)
+        {
+            case 1: mainscreen();  break;
+            case 2: choose_map();  break;
+        }
+
+        EndDrawing();
+    }
+
+    UnloadTexture(menuBg);
+    CloseWindow();
     return 0;
 }
 
-void mainscreen(){
-    InitWindow(1600, 900, "MOLE MAYHEM");
-
-    while (!WindowShouldClose())
-    {
-        BeginDrawing();
-       
-        Texture2D background = LoadTexture("menu.png");
-
-        ClearBackground(RAYWHITE);
-
-        DrawTexture(background, 0, 0, WHITE);
-        Vector2 mouse = GetMousePosition();
-        Rectangle playarea = {537,360,534,107};
-        Rectangle scoresarea = {537,483,534,107};
-        Rectangle leaderboardarea ={537,603,534,107};
-        Rectangle quitarea = {537,725,534,107};
-        bool hovering_p = CheckCollisionPointRec(mouse,playarea);
-        bool hovering_s = CheckCollisionPointRec(mouse,scoresarea);
-        bool hovering_l = CheckCollisionPointRec(mouse,leaderboardarea);
-        bool hovering_q = CheckCollisionPointRec(mouse,quitarea); 
-        Color bright={255,255,255,60};
-        if (hovering_p){
-            DrawRectangleRec(playarea,bright);
-        }
-
-        if (hovering_s){
-            DrawRectangleRec(scoresarea,bright);
-        }
-
-        if (hovering_l){
-            DrawRectangleRec(leaderboardarea,bright);
-        }
-
-        if (hovering_q){
-            DrawRectangleRec(quitarea,bright);
-        }
-
-        EndDrawing();
-    }                                                                                                                     
-  CloseWindow();
-}
-void gamebackground(int n)
-
+void mainscreen()
 {
-    InitWindow(1672, 941, "MOLE MAYHEM");
+    DrawTexture(menuBg, 0, 0, WHITE);
 
-    SetTargetFPS(60);
+    Vector2 mouse = GetMousePosition();
+    Rectangle playarea        = {537,360,534,107};
+    Rectangle scoresarea      = {537,483,534,107};
+    Rectangle leaderboardarea = {537,603,534,107};
+    Rectangle quitarea        = {537,725,534,107};
+    Color bright = {255,255,255,60};
 
-    while (!WindowShouldClose())
+    if (CheckCollisionPointRec(mouse, playarea)) {
+        DrawRectangleRec(playarea, bright);
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) currentscreen = 2;
+    }
+    if (CheckCollisionPointRec(mouse, scoresarea)) {
+        DrawRectangleRec(scoresarea, bright);
+    }
+    if (CheckCollisionPointRec(mouse, leaderboardarea)) {
+        DrawRectangleRec(leaderboardarea, bright);
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) currentscreen = 5;
+    }
+    if (CheckCollisionPointRec(mouse, quitarea)) {
+        DrawRectangleRec(quitarea, bright);
+        // quit: see note below
+    }
+    if(CheckCollisionPointRec(mouse, quitarea) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+    currentscreen = 2;
+    }
+}
+
+void choose_map()
+{
+    DrawTexture(map_window, 0, 0, WHITE);
+
+    Vector2 mouse = GetMousePosition();
+
+    Rectangle areas[6] = {
+        {123,  246, 376, 267},   // 0 top-left     : night
+        {1114, 246, 376, 267},   // 1 top-right    : village
+        {612,  395, 376, 267},   // 2 center       : day
+        {123,  574, 376, 267},   // 3 bottom-left  : sunset
+        {1114, 574, 376, 267},   // 4 bottom-right : fence
+        {562,  712, 478,  86}    // 5 RANDOM
+    };
+    const char *names[5] = {"night", "village", "day", "sunset", "fence"};
+
+    Color glow = {255, 255, 255, 70};
+
+    for (int i = 0; i < 6; i++)
     {
-        BeginDrawing();
-
-        ClearBackground(RAYWHITE);
-
-        Texture2D background = LoadTexture("day.png");
-
-        DrawTexture(background, 0, 0, WHITE);
-
-        for(int r = 0; r < n; r++)
+        if (CheckCollisionPointRec(mouse, areas[i]))
         {
-            for(int c = 0; c < 3; c++)
+            DrawRectangleRec(areas[i], glow);
+            DrawRectangleLinesEx(areas[i], 4, YELLOW);
+
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
-                int posx = 350 + (c * 400);
-                int posy = 500 + (r * 200);
-                DrawCircle(posx, posy, 60, BLACK);
+                int pick = (i == 5) ? GetRandomValue(0, 4) : i;
+                strcpy(selected_map, names[pick]);
+                printf("map: %s\n", selected_map);
+                // currentscreen = 3;
             }
         }
-        
-        EndDrawing();
     }
-    
-    CloseWindow();
 
 }
