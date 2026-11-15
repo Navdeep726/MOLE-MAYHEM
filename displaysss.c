@@ -123,7 +123,6 @@ void choose_map()
         }
     }
 
-    if (IsKeyPressed(KEY_BACKSPACE)) currentscreen = 1;
 }
 
 void choose_difficulty()
@@ -155,7 +154,6 @@ void choose_difficulty()
         }
     }
 
-    if (IsKeyPressed(KEY_BACKSPACE)) currentscreen = 2;
 }
 
 void holes(int mode)
