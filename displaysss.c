@@ -18,28 +18,6 @@ char selected_map[100] = "";
 Texture2D menuBg, map_window, difficulty_window;
 Texture2D mapBg[5];     // night, village, day, sunset, fence
 
-// Easy: 6 holes (3 x 2)
-Vector2 easy_holes[6] = {
-    {413.33f, 500}, {800, 500}, {1186.67f, 500},
-    {413.33f, 720}, {800, 720}, {1186.67f, 720}
-};
-float easy_radius = 88;
-
-// Medium: 9 holes (3 x 3)
-Vector2 medium_holes[9] = {
-    {413.33f, 463.33f}, {800, 463.33f}, {1186.67f, 463.33f},
-    {413.33f, 610},     {800, 610},     {1186.67f, 610},
-    {413.33f, 756.67f}, {800, 756.67f}, {1186.67f, 756.67f}
-};
-float medium_radius = 58.67f;
-
-// Hard: 16 holes (staggered)
-Vector2 hard_holes[16] = {
-    {397.5f, 430}, {627.5f, 430}, {857.5f, 430}, {1087.5f, 430},
-    {512.5f, 555}, {742.5f, 555}, {972.5f, 555}, {1202.5f, 555},
-    {397.5f, 680}, {627.5f, 680}, {857.5f, 680}, {1087.5f, 680},
-    {512.5f, 805}, {742.5f, 805}, {972.5f, 805}, {1202.5f, 805}
-};
 float hard_radius = 46;
 
 int main()
