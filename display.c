@@ -4,11 +4,12 @@
 
 void mainscreen();
 void choose_map();
+void choose_difficulty();
 
 /* 1 main, 2 choose map, 3 choose difficulty,
    4 game, 5 leaderboard, 6 game over */
-int currentscreen = 1;      // global so every screen can change it
-Texture2D menuBg,map_window;           // loaded once in main
+int currentscreen = 1,difficulty;      // global so every screen can change it
+Texture2D menuBg,map_window,difficulty_window;           // loaded once in main
 char selected_map[100];
 
 int main()
@@ -18,7 +19,7 @@ int main()
 
     menuBg = LoadTexture("menu.png");    // must come after InitWindow
     map_window = LoadTexture("choose_map.png");
-
+    difficulty_window = LoadTexture("choose_difficulty.png");
     while (!WindowShouldClose())
     {
         BeginDrawing();
@@ -28,6 +29,7 @@ int main()
         {
             case 1: mainscreen();  break;
             case 2: choose_map();  break;
+            case 3: choose_difficulty(); break;
         }
 
         EndDrawing();
@@ -98,7 +100,37 @@ void choose_map()
                 int pick = (i == 5) ? GetRandomValue(0, 4) : i;
                 strcpy(selected_map, names[pick]);
                 printf("map: %s\n", selected_map);
-                // currentscreen = 3;
+                currentscreen = 3;
+            }
+        }
+    }
+
+}
+void choose_difficulty()
+{
+    DrawTexture(difficulty_window, 0, 0, WHITE);
+
+    Vector2 mouse = GetMousePosition();
+
+    Rectangle areas[3] = {
+        {485, 298, 598, 154},    // 0 easy
+        {485, 482, 598, 155},    // 1 medium
+        {485, 665, 598, 158}     // 2 hard
+    };
+
+    Color glow = {255, 255, 255, 70};
+
+    for (int i = 0; i < 3; i++)
+    {
+        if (CheckCollisionPointRec(mouse, areas[i]))
+        {
+            DrawRectangleRec(areas[i], glow);
+
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
+                difficulty = i + 1;          // 1 easy, 2 medium, 3 hard
+                currentscreen = 4;           // go to the game
+                printf("difficulty: %d\n", difficulty);
             }
         }
     }
