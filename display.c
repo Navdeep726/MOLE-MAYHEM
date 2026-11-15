@@ -4,11 +4,8 @@
 
 void mainscreen();
 void choose_map();
-<<<<<<< HEAD
 void choose_difficulty();
-=======
 void holes();
->>>>>>> 77288fc4ad7f3257ba58dd256e0d699d38c39fa4
 
 /* 1 main, 2 choose map, 3 choose difficulty,
    4 game, 5 leaderboard, 6 game over */
@@ -140,9 +137,9 @@ void choose_difficulty()
     }
 
 }
-void holes(int difficulty)
+void holes(int mode)
 {
-    switch(difficulty)
+    switch(mode)
     {
         case 1:
             for(int i = 0; i < 3; i++)
