@@ -4,6 +4,7 @@
 
 void mainscreen();
 void choose_map();
+void holes();
 
 /* 1 main, 2 choose map, 3 choose difficulty,
    4 game, 5 leaderboard, 6 game over */
@@ -104,4 +105,53 @@ void choose_map()
         }
     }
 
+}
+void holes(int difficulty)
+{
+    switch(difficulty)
+    {
+        case 1:
+            for(int i = 0; i < 3; i++)
+            {
+                for(int j = 0; j < 2; j++)
+                {
+                    float posx = 413.33f + (i * 386.67f);
+                    float posy = 500 + (j * 220);
+                    DrawCircle(posx, posy, 88, BLACK);
+                    DrawCircleLines(posx, posy, 88, BEIGE);
+                }
+            }
+            break;
+        case 2:
+            for(int i = 0; i < 3; i++)
+            {
+                for(int j = 0; j < 3; j++)
+                {
+                    float posp = 413.33f + (i * 386.67f);
+                    float posq = 463.33f + (j * 146.67f);
+                    DrawCircle(posp, posq, 58.67f, BLACK);
+                    DrawCircleLines(posp, posq, 58.67f, BEIGE);
+                }
+            }
+            break;
+        case 3:
+            for(int i = 0; i < 4; i++)
+            {
+                for(int j = 0; j < 2; j++)
+                {
+                    float posa = 397.5f + (i * 230);
+                    float posb = 430 + (j * 150);
+                    DrawCircle(posa, posb, 46, BLACK);
+                    DrawCircleLines(posa, posb, 46, BEIGE);
+                }
+                for(int k = 0; k < 2; k++)
+                {
+                    float posc = 512.5f + (i * 230);
+                    float posd = 555 + (k * 150);
+                    DrawCircle(posc, posd, 46, BLACK);
+                    DrawCircleLines(posc, posd, 46, BEIGE);
+                }
+            }
+            break;
+    }
 }
