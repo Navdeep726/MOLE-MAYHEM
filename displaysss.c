@@ -12,7 +12,6 @@ void create_game(char map[100], int difficulty);
    4 game, 5 leaderboard, 6 game over */
 int currentscreen = 1;
 int difficulty = 1;
-bool quitgame = false;
 char selected_map[100] = "";
 
 Texture2D menuBg, map_window, difficulty_window;
@@ -36,7 +35,7 @@ int main()
     mapBg[3] = LoadTexture("sunset.png");
     mapBg[4] = LoadTexture("fence.png");
 
-    while (!WindowShouldClose() && !quitgame)
+    while (!WindowShouldClose() )
     {
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -85,7 +84,6 @@ void mainscreen()
     }
     if (CheckCollisionPointRec(mouse, quitarea)) {
         DrawRectangleRec(quitarea, bright);
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) quitgame = true;
     }
 }
 
