@@ -165,7 +165,7 @@ void holes(int mode)
                 {
                     float posx = 413.33f + (i * 386.67f);
                     float posy = 500 + (j * 220);
-                    DrawCircle(posx, posy, 88, BLACK);
+                    DrawCircle(posx, posy, 88, BROWN);
                     DrawCircleLines(posx, posy, 88, BEIGE);
                 }
             }
@@ -178,7 +178,7 @@ void holes(int mode)
                 {
                     float posp = 413.33f + (i * 386.67f);
                     float posq = 463.33f + (j * 146.67f);
-                    DrawCircle(posp, posq, 58.67f, BLACK);
+                    DrawCircle(posp, posq, 58.67f, BROWN);
                     DrawCircleLines(posp, posq, 58.67f, BEIGE);
                 }
             }
@@ -191,14 +191,14 @@ void holes(int mode)
                 {
                     float posa = 397.5f + (i * 230);
                     float posb = 430 + (j * 250);      // rows at 430 and 680
-                    DrawCircle(posa, posb, 46, BLACK);
+                    DrawCircle(posa, posb, 46, BROWN);
                     DrawCircleLines(posa, posb, 46, BEIGE);
                 }
                 for(int k = 0; k < 2; k++)
                 {
                     float posc = 512.5f + (i * 230);
                     float posd = 555 + (k * 250);      // rows at 555 and 805
-                    DrawCircle(posc, posd, 46, BLACK);
+                    DrawCircle(posc, posd, 46, BROWN);
                     DrawCircleLines(posc, posd, 46, BEIGE);
                 }
             }
