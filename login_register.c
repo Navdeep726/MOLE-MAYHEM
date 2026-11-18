@@ -20,6 +20,9 @@ void display_score(char name[100]);
 int player_highest(char player[100]);
 int highest();
 
+/* CHANGED: main() is commented out because the game (main.c) now has the
+   main() and calls choice() from there. A program can only have one main().
+
 int main(void){
     //char n[100];
     //choice(n);
@@ -30,8 +33,9 @@ int main(void){
     // return 0;
     highest();
     return 0;
-    
+
 }
+*/
 // returns 1 on success, 0 on failure
 int register_p(char *name)
 {
@@ -182,7 +186,13 @@ void choice(char *n){
             break;//to quit
         case 4:
             {
-            display_score(n);
+            // CHANGED: nobody is logged in yet here, so ask whose scores to show
+            char who[100];
+            printf("enter username: ");
+            scanf(" %99s", who);
+            display_score(who);
+            printf("\n");
+            choice(n);          // back to main screen
             break;
         }
         
@@ -195,7 +205,8 @@ int player_highest(char player[100]){
     FILE *ptr=fopen("player_scores.txt","r");
     ps p1;
     int high_s=0;
-    while(fscanf(ptr,"%99s %d",p1.username,p1.score)==2){
+    if (ptr==NULL) return 0;        // FIXED: file may not exist
+    while(fscanf(ptr,"%99s %d",p1.username,&p1.score)==2){   // FIXED: & was missing
         if(strcmp(player,p1.username)==0){
             if(p1.score>high_s){
                 high_s=p1.score;
@@ -213,8 +224,12 @@ int highest(){
     p2[0].score=0;
     p2[1].score=0;
     p2[2].score=0;
+    strcpy(p2[0].username,"---");   // FIXED: names were uninitialised
+    strcpy(p2[1].username,"---");
+    strcpy(p2[2].username,"---");
     int temp;
     char tempc[100];
+    if (ptr==NULL) return 0;        // FIXED: file may not exist
     while(fscanf(ptr,"%99s %d",p1.username,&p1.score)==2){
         if (p2[0].score<p1.score){
             p2[2].score=p2[1].score;
