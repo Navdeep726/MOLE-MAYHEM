@@ -42,10 +42,14 @@ int main()
 
         switch (currentscreen)
         {
-            case 1: mainscreen(); break;
-            case 2: choose_map();                         break;
-            case 3: choose_difficulty();                  break;
-            case 4: create_game(selected_map, difficulty); break;
+            case 1: mainscreen(); 
+            break;
+            case 2: choose_map();                         
+            break;
+            case 3: choose_difficulty();                  
+            break;
+            case 4: create_game(selected_map, difficulty); 
+            break;
         }
         DrawText(TextFormat("screen %d  difficulty %d  map '%s'", currentscreen, difficulty, selected_map),
          20, 20, 30, RED);
@@ -113,7 +117,16 @@ void choose_map()
 
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
-                int pick = (i == 5) ? GetRandomValue(0, 4) : i;
+                // int pick = (i == 5) ? GetRandomValue(0, 4) : i;
+                
+                
+                int pick;
+                if (i==5){
+                    pick=GetRandomValue(0,4);
+                }
+                else{
+                    pick = i;
+                }
                 strcpy(selected_map, names[pick]);
                 printf("map: %s\n", selected_map);
                 currentscreen = 3;
