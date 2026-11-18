@@ -10,6 +10,9 @@ void create_game(char map[100], int difficulty);
 void draw_mole(int difficulty);
 void build_holes(int mode);
 void holes(int mode);
+void check_hit();          // NEW: handles clicks during the game
+void draw_hud();           // NEW: shows score and lives on screen
+void game_over();          // NEW: saves score and goes back to menu
 
 /* 1 main, 2 choose map, 3 choose difficulty,
    4 game, 5 leaderboard, 6 game over */
@@ -19,7 +22,14 @@ char selected_map[100] = "";
 Vector2 holePos[16];
 int holeCount = 0;
 int activeHole = -1;      // -1 means no mole yet
-double spawnTime = 0;     // when the current mole appeare
+double spawnTime = 0;     // when the current mole appeared
+
+/* NEW: score and lives */
+int score = 0;
+int lives = 3;
+int lastScore = 0;        // score of the most recent game
+int scoreHistory[100];    // every finished game's score
+int scoreCount = 0;       // how many scores are stored
 
 
 Texture2D menuBg, map_window, difficulty_window,mole;
@@ -51,13 +61,13 @@ int main()
 
         switch (currentscreen)
         {
-            case 1: mainscreen(); 
+            case 1: mainscreen();
             break;
-            case 2: choose_map();                         
+            case 2: choose_map();
             break;
-            case 3: choose_difficulty();                  
+            case 3: choose_difficulty();
             break;
-            case 4: create_game(selected_map, difficulty); 
+            case 4: create_game(selected_map, difficulty);
             break;
         }
         DrawText(TextFormat("screen %d  difficulty %d  map '%s'", currentscreen, difficulty, selected_map),
@@ -69,6 +79,7 @@ int main()
     UnloadTexture(map_window);
     UnloadTexture(difficulty_window);
     for (int i = 0; i < 5; i++) UnloadTexture(mapBg[i]);
+    UnloadTexture(mole);                       // NEW: mole was never unloaded
     CloseWindow();
     return 0;
 }
@@ -127,8 +138,12 @@ void choose_map()
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
 
+<<<<<<< HEAD
                 
                 
+=======
+
+>>>>>>> e9b99f08559d479417fbcfc64b63def55f7149a4
                 int pick;
                 if (i==5){
                     pick=GetRandomValue(0,4);
@@ -174,37 +189,55 @@ void choose_difficulty()
             }
         }
     }
-    
+
 
 }
 void build_holes(int mode)
 {
     holeCount = 0;
 
+    /* FIXED: added braces so holeCount++ runs for every hole */
     if (mode == 1)   // easy: 6 holes
     {
         for (int i = 0; i < 3; i++)
+        {
             for (int j = 0; j < 2; j++)
-                holePos[holeCount++] = (Vector2){413.33f + i*386.67f, 500 + j*220};
+            {
+                holePos[holeCount] = (Vector2){413.33f + i*386.67f, 500 + j*220};
+                holeCount++;
+            }
+        }
     }
     else if (mode == 2)   // medium: 9 holes
     {
         for (int i = 0; i < 3; i++)
+        {
             for (int j = 0; j < 3; j++)
-                holePos[holeCount++] = (Vector2){413.33f + i*386.67f, 463.33f + j*146.67f};
+            {
+                holePos[holeCount] = (Vector2){413.33f + i*386.67f, 463.33f + j*146.67f};
+                holeCount++;
+            }
+        }
     }
     else if (mode == 3)   // hard: 16 holes
     {
+        /* FIXED: assign first, then increment (was writing to holePos[16]) */
         for (int i = 0; i < 4; i++)
         {
-            for (int j = 0; j < 2; j++)
-                holePos[holeCount++] = (Vector2){397.5f + i*230, 430 + j*250};
-            for (int k = 0; k < 2; k++)
-                holePos[holeCount++] = (Vector2){512.5f + i*230, 555 + k*250};
+            for (int j = 0; j < 2; j++){
+                holePos[holeCount] = (Vector2){397.5f + i*230, 430 + j*250};
+                holeCount++;
+            }
+            for (int k = 0; k < 2; k++){
+                 holePos[holeCount] = (Vector2){512.5f + i*230, 555 + k*250};
+                 holeCount++;
+            }
         }
     }
 
     activeHole = -1;   // reset the mole whenever a new game is set up
+    score = 0;         // NEW: fresh score for every new game
+    lives = 3;         // NEW: fresh lives for every new game
 }
 
 void holes(int mode)
@@ -269,6 +302,8 @@ void create_game(char map[100], int difficulty)
 
     holes(difficulty);
     draw_mole(difficulty);
+    check_hit();     // NEW
+    draw_hud();      // NEW
 
 
 }
@@ -288,4 +323,56 @@ void draw_mole(int difficulty)
                 holePos[activeHole].x - mole.width / 2,
                 holePos[activeHole].y - mole.height / 2,
                 WHITE);
+}
+
+/* ===================== NEW CODE BELOW ===================== */
+
+void check_hit()
+{
+    // only do something on the frame the left button is clicked
+    if (!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) return;
+    if (activeHole == -1) return;
+
+    // hitbox = the hole the mole is in (same radius holes() draws with)
+    float radius;
+    if      (difficulty == 1) radius = 88;
+    else if (difficulty == 2) radius = 58.67f;
+    else                      radius = hard_radius;   // 46
+
+    if (CheckCollisionPointCircle(GetMousePosition(), holePos[activeHole], radius))
+    {
+        score++;                 // hit!
+        activeHole = -1;         // mole disappears, a new one spawns next frame
+        printf("hit! score: %d\n", score);
+    }
+    else
+    {
+        lives--;                 // missed
+        printf("miss! lives left: %d\n", lives);
+
+        if (lives <= 0)
+            game_over();
+    }
+}
+
+void draw_hud()
+{
+    DrawText(TextFormat("Score: %d", score), 1300, 20, 40, YELLOW);
+    DrawText(TextFormat("Lives: %d", lives), 1300, 70, 40, RED);
+}
+
+void game_over()
+{
+    lastScore = score;
+
+    if (scoreCount < 100)
+    {
+        scoreHistory[scoreCount] = score;   // store this game's score
+        scoreCount++;
+    }
+
+    printf("GAME OVER! final score: %d\n", score);
+
+    activeHole = -1;
+    currentscreen = 1;           // back to main menu (for now)
 }
