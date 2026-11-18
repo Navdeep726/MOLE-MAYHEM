@@ -17,16 +17,18 @@ void choice(char *n);
 int register_p(char *name);
 int login_p(char *name);
 void display_score(char name[100]);
-int player_highest(char *player);
+int player_highest(char player[100]);
 int highest();
 
 int main(void){
     //char n[100];
     //choice(n);
     //printf("thank you");
-    int i;
-    i=highest();
-    printf("%d",i);
+    // int i;
+    // i=highest();
+    // printf("%d",i);
+    // return 0;
+    highest();
     return 0;
     
 }
@@ -189,32 +191,61 @@ void choice(char *n){
 
 
 
-int player_highest(char player[]){
+int player_highest(char player[100]){
     FILE *ptr=fopen("player_scores.txt","r");
-    char ply[100];
-    int scr;
+    ps p1;
     int high_s=0;
-    while(fscanf(ptr,"%99s %d",ply,&scr)==2){
-        if(strcmp(player,ply)==0){
-            if(scr>high_s){
-                high_s=scr;
+    while(fscanf(ptr,"%99s %d",p1.username,p1.score)==2){
+        if(strcmp(player,p1.username)==0){
+            if(p1.score>high_s){
+                high_s=p1.score;
             }
         }
     }
     fclose(ptr);
     return high_s;
 }
-int highest(){//to find the highest score.
-    char players[100];
-    int scr;
-    int h1,h2,h3;
+
+int highest(){
     FILE *ptr=fopen("player_scores.txt","r");
-    while(fscanf(ptr,"%99s %d",players,&scr)==2){
-        int scr=player_highest(players);
+    ps p1;
+    ps p2[3];
+    p2[0].score=0;
+    p2[1].score=0;
+    p2[2].score=0;
+    int temp;
+    char tempc[100];
+    while(fscanf(ptr,"%99s %d",p1.username,&p1.score)==2){
+        if (p2[0].score<p1.score){
+            p2[2].score=p2[1].score;
+            p2[1].score=p2[0].score;
+            p2[0].score=p1.score;
+            strcpy(p2[2].username,p2[1].username);
+            strcpy(p2[1].username,p2[0].username);
+            strcpy(p2[0].username,p1.username);
+
+        }
+        else if(p2[1].score<p1.score){
+            temp = p2[1].score;
+            p2[2].score=p2[1].score;
+            p2[1].score=p1.score;;
+            strcpy(p2[2].username,p2[1].username);
+            strcpy(p2[1].username,p1.username);
+        }
+        else if(p2[2].score<p1.score){
+            p2[2].score=p1.score;
+            strcpy(p2[2].username,p1.username);
+        }
     }
-    return scr;
+
     fclose(ptr);
-}
+    printf("%s %d %s %d %s %d",p2[0].username,p2[0].score,p2[1].username,p2[1].score,p2[2].username,p2[2].score);
+    return 0;
+    
+
+    }
+
+
 
 
 
