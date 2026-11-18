@@ -126,6 +126,7 @@ void choose_map()
 
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
+
                 
                 
                 int pick;
