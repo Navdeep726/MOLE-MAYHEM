@@ -126,7 +126,6 @@ void choose_map()
 
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
-                // int pick = (i == 5) ? GetRandomValue(0, 4) : i;
                 
                 
                 int pick;
