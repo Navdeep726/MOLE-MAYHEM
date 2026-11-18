@@ -7,14 +7,22 @@ void mainscreen();
 void choose_map();
 void choose_difficulty();
 void create_game(char map[100], int difficulty);
+void draw_mole(int difficulty);
+void build_holes(int mode);
+void holes(int mode);
 
 /* 1 main, 2 choose map, 3 choose difficulty,
    4 game, 5 leaderboard, 6 game over */
 int currentscreen = 1;
 int difficulty = 1;
 char selected_map[100] = "";
+Vector2 holePos[16];
+int holeCount = 0;
+int activeHole = -1;      // -1 means no mole yet
+double spawnTime = 0;     // when the current mole appeare
 
-Texture2D menuBg, map_window, difficulty_window;
+
+Texture2D menuBg, map_window, difficulty_window,mole;
 Texture2D mapBg[5];     // night, village, day, sunset, fence
 
 float hard_radius = 46;
@@ -34,6 +42,7 @@ int main()
     mapBg[2] = LoadTexture("day.png");
     mapBg[3] = LoadTexture("sunset.png");
     mapBg[4] = LoadTexture("fence.png");
+    mole = LoadTexture("mole_4_angry.png");
 
     while (!WindowShouldClose() )
     {
@@ -159,12 +168,43 @@ void choose_difficulty()
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
                 difficulty = i + 1;          // 1 easy, 2 medium, 3 hard
+                build_holes(difficulty);
                 currentscreen = 4;
                 printf("difficulty: %d\n", difficulty);
             }
         }
     }
+    
 
+}
+void build_holes(int mode)
+{
+    holeCount = 0;
+
+    if (mode == 1)   // easy: 6 holes
+    {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 2; j++)
+                holePos[holeCount++] = (Vector2){413.33f + i*386.67f, 500 + j*220};
+    }
+    else if (mode == 2)   // medium: 9 holes
+    {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                holePos[holeCount++] = (Vector2){413.33f + i*386.67f, 463.33f + j*146.67f};
+    }
+    else if (mode == 3)   // hard: 16 holes
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 2; j++)
+                holePos[holeCount++] = (Vector2){397.5f + i*230, 430 + j*250};
+            for (int k = 0; k < 2; k++)
+                holePos[holeCount++] = (Vector2){512.5f + i*230, 555 + k*250};
+        }
+    }
+
+    activeHole = -1;   // reset the mole whenever a new game is set up
 }
 
 void holes(int mode)
@@ -178,7 +218,7 @@ void holes(int mode)
                 {
                     float posx = 413.33f + (i * 386.67f);
                     float posy = 500 + (j * 220);
-                    DrawCircle(posx, posy, 88, BROWN);
+                    DrawCircle(posx, posy, 88, BLACK);
                     DrawCircleLines(posx, posy, 88, BEIGE);
                 }
             }
@@ -191,7 +231,7 @@ void holes(int mode)
                 {
                     float posp = 413.33f + (i * 386.67f);
                     float posq = 463.33f + (j * 146.67f);
-                    DrawCircle(posp, posq, 58.67f, BROWN);
+                    DrawCircle(posp, posq, 58.67f, BLACK);
                     DrawCircleLines(posp, posq, 58.67f, BEIGE);
                 }
             }
@@ -204,14 +244,14 @@ void holes(int mode)
                 {
                     float posa = 397.5f + (i * 230);
                     float posb = 430 + (j * 250);      // rows at 430 and 680
-                    DrawCircle(posa, posb, 46, BROWN);
+                    DrawCircle(posa, posb, 46, BLACK);
                     DrawCircleLines(posa, posb, 46, BEIGE);
                 }
                 for(int k = 0; k < 2; k++)
                 {
                     float posc = 512.5f + (i * 230);
                     float posd = 555 + (k * 250);      // rows at 555 and 805
-                    DrawCircle(posc, posd, 46, BROWN);
+                    DrawCircle(posc, posd, 46, BLACK);
                     DrawCircleLines(posc, posd, 46, BEIGE);
                 }
             }
@@ -228,5 +268,24 @@ void create_game(char map[100], int difficulty)
     else                                  DrawTexture(mapBg[2], 0, 0, WHITE);
 
     holes(difficulty);
+    draw_mole(difficulty);
 
+
+}
+void draw_mole(int difficulty)
+{
+    double now = GetTime();
+
+    if (holeCount == 0) return;
+
+    if (activeHole == -1 || now - spawnTime >= 1.0)
+    {
+        activeHole = GetRandomValue(0, holeCount - 1);
+        spawnTime = now;
+    }
+
+    DrawTexture(mole,
+                holePos[activeHole].x - mole.width / 2,
+                holePos[activeHole].y - mole.height / 2,
+                WHITE);
 }
