@@ -24,9 +24,11 @@ int main(void){
     //char n[100];
     //choice(n);
     //printf("thank you");
-    int i;
-    i=highest();
-    printf("%d",i);
+    // int i;
+    // i=highest();
+    // printf("%d",i);
+    // return 0;
+    highest();
     return 0;
     
 }
@@ -203,28 +205,47 @@ int player_highest(char player[100]){
     fclose(ptr);
     return high_s;
 }
-//ask mam
-// int highest(){
-//     FILE *ptr=fopen("player_scores.txt","r");
-//     ps p1;
-//     ps p2[3];
-//     int n=0;
-//     while(fscanf(ptr,"%99s %d",p1.username,p1.score)==2){
-//         n++;
-//     }
-//     fseek(ptr,0L,SEEK_SET); 
-//     while(fscanf(ptr,"%99s %d",p1.username,p1.score)==2){
-//         for(int j=0;j<3;j++){
-//             if(p2[j].score==NULL||p2[j].score<p1.score){
-//                 strcpy(p2[j].username,p1.username);
-//                 p2[j].score = p1.score;
-//                 break;
-//             }
-//         }
 
-//     }
+int highest(){
+    FILE *ptr=fopen("player_scores.txt","r");
+    ps p1;
+    ps p2[3];
+    p2[0].score=0;
+    p2[1].score=0;
+    p2[2].score=0;
+    int temp;
+    char tempc[100];
+    while(fscanf(ptr,"%99s %d",p1.username,&p1.score)==2){
+        if (p2[0].score<p1.score){
+            p2[2].score=p2[1].score;
+            p2[1].score=p2[0].score;
+            p2[0].score=p1.score;
+            strcpy(p2[2].username,p2[1].username);
+            strcpy(p2[1].username,p2[0].username);
+            strcpy(p2[0].username,p1.username);
 
-// }
+        }
+        else if(p2[1].score<p1.score){
+            temp = p2[1].score;
+            p2[2].score=p2[1].score;
+            p2[1].score=p1.score;;
+            strcpy(p2[2].username,p2[1].username);
+            strcpy(p2[1].username,p1.username);
+        }
+        else if(p2[2].score<p1.score){
+            p2[2].score=p1.score;
+            strcpy(p2[2].username,p1.username);
+        }
+    }
+
+    fclose(ptr);
+    printf("%s %d %s %d %s %d",p2[0].username,p2[0].score,p2[1].username,p2[1].score,p2[2].username,p2[2].score);
+    return 0;
+    
+
+    }
+
+
 
 
 
