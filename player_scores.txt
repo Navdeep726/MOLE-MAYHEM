@@ -7,3 +7,13 @@ surbhi 500
 navdeep 600
 mayank 800
 mayank 400
+navdeep 19
+shreesh 28
+shreesh 25
+navdeep 12
+navdeep 6
+navdeep 20
+navdeep 8
+navdeep 4
+navdeep 33
+navdeep 10
