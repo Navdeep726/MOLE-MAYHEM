@@ -1,19 +1,5 @@
-surbhi 100
-navdeep 500
-surbhi 300
-priyanshi 400
-priyanshi 400
-surbhi 500
-navdeep 600
-mayank 800
-mayank 400
-navdeep 19
-shreesh 28
-shreesh 25
-navdeep 12
-navdeep 6
-navdeep 20
 navdeep 8
+<<<<<<< HEAD
 navdeep 4
 navdeep 33
 navdeep 10
@@ -46,3 +32,5 @@ priyanshi 7
 priyanshi 39
 priyanshi 42
 >>>>>>> 88c4c6c8f2ff33fc936651e3c2fbd4f1244d4795
+=======
+>>>>>>> b31da232dac431a1e1f61ebf95d735d049eb0bb0
