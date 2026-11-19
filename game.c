@@ -9,7 +9,7 @@
 /* functions of this module */
 void create_game(char map[100], int difficulty);
 void draw_mole(int difficulty);
-void build_holes(int mode);
+void hole_coordinate(int mode);
 void holes(int mode);
 void check_hit();
 void draw_hud();
@@ -38,7 +38,7 @@ int lives = 3;
 
 float hard_radius = 46;
 
-void build_holes(int mode)
+void hole_coordinates(int mode)
 {
     holeCount = 0;
 
