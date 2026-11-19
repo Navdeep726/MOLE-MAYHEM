@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 navdeep 22
 surbhi 31
 priyanshi 26
@@ -22,3 +23,5 @@ priyanshi 5
 priyanshi 7
 priyanshi 39
 priyanshi 42
+=======
+>>>>>>> b31da232dac431a1e1f61ebf95d735d049eb0bb0
