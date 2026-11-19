@@ -1,3 +1,6 @@
+/* MODULE 2: login_register.c
+   Register, login and console score display. */
+
 #include <stdio.h>
 #include <string.h>
 
@@ -18,7 +21,6 @@ int register_p(char *name);
 int login_p(char *name);
 void display_score(char name[100]);
 int player_highest(char player[100]);
-int highest();
 
 /* CHANGED: main() is commented out because the game (main.c) now has the
    main() and calls choice() from there. A program can only have one main().
@@ -199,8 +201,6 @@ void choice(char *n){
     }
 }
 
-
-
 int player_highest(char player[100]){
     FILE *ptr=fopen("player_scores.txt","r");
     ps p1;
@@ -216,51 +216,3 @@ int player_highest(char player[100]){
     fclose(ptr);
     return high_s;
 }
-
-int highest(){
-    FILE *ptr=fopen("player_scores.txt","r");
-    ps p1;
-    ps p2[3];
-    p2[0].score=0;
-    p2[1].score=0;
-    p2[2].score=0;
-    strcpy(p2[0].username,"---");   // FIXED: names were uninitialised
-    strcpy(p2[1].username,"---");
-    strcpy(p2[2].username,"---");
-    int temp;
-    char tempc[100];
-    if (ptr==NULL) return 0;        // FIXED: file may not exist
-    while(fscanf(ptr,"%99s %d",p1.username,&p1.score)==2){
-        if (p2[0].score<p1.score){
-            p2[2].score=p2[1].score;
-            p2[1].score=p2[0].score;
-            p2[0].score=p1.score;
-            strcpy(p2[2].username,p2[1].username);
-            strcpy(p2[1].username,p2[0].username);
-            strcpy(p2[0].username,p1.username);
-
-        }
-        else if(p2[1].score<p1.score){
-            temp = p2[1].score;
-            p2[2].score=p2[1].score;
-            p2[1].score=p1.score;;
-            strcpy(p2[2].username,p2[1].username);
-            strcpy(p2[1].username,p1.username);
-        }
-        else if(p2[2].score<p1.score){
-            p2[2].score=p1.score;
-            strcpy(p2[2].username,p1.username);
-        }
-    }
-
-    fclose(ptr);
-    printf("%s %d %s %d %s %d",p2[0].username,p2[0].score,p2[1].username,p2[1].score,p2[2].username,p2[2].score);
-    return 0;
-    
-
-    }
-
-
-
-
-
