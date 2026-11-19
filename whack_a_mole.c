@@ -51,7 +51,7 @@ int player_highest(char player[100]);
 /* MODULE 3: gameplay */
 void create_game(char map[100], int difficulty);
 void draw_mole(int difficulty);
-void build_holes(int mode);
+void hole_coordinate(int mode);
 void holes(int mode);
 void check_hit();
 void draw_hud();
@@ -289,7 +289,7 @@ void choose_difficulty()
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
                 difficulty = i + 1;          // 1 easy, 2 medium, 3 hard
-                build_holes(difficulty);
+                hole_coordinate(difficulty);
                 currentscreen = 4;
                 printf("difficulty: %d\n", difficulty);
             }
@@ -502,7 +502,7 @@ int player_highest(char player[100]){
 /* Calculates and stores the hole positions for the difficulty:
    6 holes (easy), 9 holes (medium) or 16 staggered holes (hard).
    Also resets the mole, score and lives for a new game. */
-void build_holes(int mode)
+void hole_coordinate(int mode)
 {
     holeCount = 0;
 
@@ -745,7 +745,7 @@ void game_over_screen()
             {
                 if (i == 0)                   // same map and difficulty again
                 {
-                    build_holes(difficulty);  // also resets score and lives
+                    hole_coordinate(difficulty);  // also resets score and lives
                     currentscreen = 4;
                 }
                 else if (i == 1)
