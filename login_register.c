@@ -4,23 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef struct {      //structure to store player details 
-    char username[100];
-    char password[50];
-    char mail[100];
-} pi;
-
-typedef struct {    //structure to store player scores
-    char username[100];
-    int score;
-} ps;
-
-//FUNCTION DECLARATION  
-void choice(char *n);
-int register_p(char *name);
-int login_p(char *name);
-void display_score(char name[100]);
-int player_highest(char player[100]);
+#include <login_register.h>   // structures and function declarations
 
 /* CHANGED: main() is commented out because the game (main.c) now has the
    main() and calls choice() from there. A program can only have one main().

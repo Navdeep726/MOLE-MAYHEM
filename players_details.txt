@@ -1,2 +1,19 @@
+<<<<<<< HEAD
+
+navdeep 1234 nvdc
+priyanshi 1234 pp
+surbhi shubham thesurbhi2007@gmail.com
+
+shreesh 1234 fjnakfnk
+shivanisurbhi surbhi123 shivanisurbhi2533@gmail.com
+surbhishivani 123456 shivanisurbhi@gmail.com
+=======
 nacd "c:\Users\nvdcg\Documents\GitHub\MOLE-MAYHEM" &
 navdeep 1234 nvdc.grg@gmail.com
+<<<<<<< HEAD
+>>>>>>> b31da232dac431a1e1f61ebf95d735d049eb0bb0
+=======
+pratyush ASDFGHJKL;' dfghia@gmail.com
+C:\raylib\w64devkit\bin\gcc.exe" "tempCodeRunnerFile.c" -o
+priyanshi 1234 pp2008@gmail.com
+>>>>>>> a20a726a6efe30ead0655c1ae51e865dc2482745

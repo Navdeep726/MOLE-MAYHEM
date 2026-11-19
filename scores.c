@@ -65,7 +65,7 @@ void game_over_screen()
             {
                 if (i == 0)                   // same map and difficulty again
                 {
-                    build_holes(difficulty);  // also resets score and lives
+                    hole_coordinate(difficulty);  // also resets score and lives
                     currentscreen = 4;
                 }
                 else if (i == 1)
