@@ -1,8 +1,2 @@
-
-navdeep 1234 nvdc
-priyanshi 1234 pp
-surbhi shubham thesurbhi2007@gmail.com
-
-shreesh 1234 fjnakfnk
-shivanisurbhi surbhi123 shivanisurbhi2533@gmail.com
-surbhishivani 123456 shivanisurbhi@gmail.com
+nacd "c:\Users\nvdcg\Documents\GitHub\MOLE-MAYHEM" &
+navdeep 1234 nvdc.grg@gmail.com
