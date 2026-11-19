@@ -20,4 +20,10 @@ priyanshi 18
 >>>>>>> 88c4c6c8f2ff33fc936651e3c2fbd4f1244d4795
 =======
 navdeep 8
+<<<<<<< HEAD
 >>>>>>> b31da232dac431a1e1f61ebf95d735d049eb0bb0
+=======
+navdeep 0
+pratyush 6
+pratyush 26
+>>>>>>> a20a726a6efe30ead0655c1ae51e865dc2482745
