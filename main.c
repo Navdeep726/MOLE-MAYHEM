@@ -27,6 +27,7 @@ void game_over_screen();
 void my_scores();
 void load_leaderboard();
 void load_my_scores();
+void hole_coordinate(int mode);
 
 /* 1 main, 2 choose map, 3 choose difficulty,
    4 game, 5 leaderboard, 6 game over, 7 my high scores */
@@ -234,4 +235,51 @@ void choose_difficulty()
 void draw_centered(const char *text, int cx, int y, int size, Color c)
 {
     DrawText(text, cx - MeasureText(text, size) / 2, y, size, c);
+}
+void hole_coordinates(int mode)
+{
+    holeCount = 0;
+
+    /* FIXED: added braces so holeCount++ runs for every hole */
+    if (mode == 1)   // easy: 6 holes
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                holePos[holeCount] = (Vector2){413.33f + i*386.67f, 500 + j*220};
+                holeCount++;
+            }
+        }
+    }
+    else if (mode == 2)   // medium: 9 holes
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                holePos[holeCount] = (Vector2){413.33f + i*386.67f, 463.33f + j*146.67f};
+                holeCount++;
+            }
+        }
+    }
+    else if (mode == 3)   // hard: 16 holes
+    {
+        /* FIXED: assign first, then increment (was writing to holePos[16]) */
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 2; j++){
+                holePos[holeCount] = (Vector2){397.5f + i*230, 430 + j*250};
+                holeCount++;
+            }
+            for (int k = 0; k < 2; k++){
+                 holePos[holeCount] = (Vector2){512.5f + i*230, 555 + k*250};
+                 holeCount++;
+            }
+        }
+    }
+
+    activeHole = -1;   // reset the mole whenever a new game is set up
+    score = 0;         // NEW: fresh score for every new game
+    lives = 3;         // NEW: fresh lives for every new game
 }
