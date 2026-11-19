@@ -1,192 +1,43 @@
+/* MODULE 3: game.c  -  gameplay
+   Holes, moles, clicking on moles, score and lives during the game,
+   and saving the score to the difficulty file when the game ends. */
+
 #include "raylib.h"
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
 
-void mainscreen();
-void choose_map();
-void choose_difficulty();
+/* functions of this module */
 void create_game(char map[100], int difficulty);
 void draw_mole(int difficulty);
 void build_holes(int mode);
 void holes(int mode);
-void check_hit();          // NEW: handles clicks during the game
-void draw_hud();           // NEW: shows score and lives on screen
-void game_over();          // NEW: saves score and goes back to menu
+void check_hit();
+void draw_hud();
+void game_over();
 
-/* 1 main, 2 choose map, 3 choose difficulty,
-   4 game, 5 leaderboard, 6 game over */
-int currentscreen = 1;
-int difficulty = 1;
-char selected_map[100] = "";
+/* variables from module 1: main.c */
+extern int currentscreen;
+extern int difficulty;
+extern char player_name[100];
+extern Texture2D moleTex[3];
+extern Texture2D mapBg[5];
+
+/* variables from module 4: scores.c */
+extern int lastScore;
+extern int scoreHistory[100];
+extern int scoreCount;
+extern char *scoreFiles[3];
+
 Vector2 holePos[16];
 int holeCount = 0;
-int activeHole = -1;      // -1 means no mole yet
-double spawnTime = 0;     // when the current mole appeared
+int activeHole = -1;
+double spawnTime = 0;
 
-/* NEW: score and lives */
 int score = 0;
 int lives = 3;
-int lastScore = 0;        // score of the most recent game
-int scoreHistory[100];    // every finished game's score
-int scoreCount = 0;       // how many scores are stored
-
-
-Texture2D menuBg, map_window, difficulty_window,mole;
-Texture2D mapBg[5];     // night, village, day, sunset, fence
 
 float hard_radius = 46;
 
-int main()
-{
-    InitWindow(1600, 900, "Whack-a-Mole");
-    SetTargetFPS(60);
-    SetExitKey(KEY_NULL);                      // ESC no longer closes the window
-
-    menuBg            = LoadTexture("menu.png");     // must come after InitWindow
-    map_window        = LoadTexture("choose_map.png");
-    difficulty_window = LoadTexture("choose_difficulty.png");
-
-    mapBg[0] = LoadTexture("night.png");
-    mapBg[1] = LoadTexture("windmill.png");   // village
-    mapBg[2] = LoadTexture("day.png");
-    mapBg[3] = LoadTexture("sunset.png");
-    mapBg[4] = LoadTexture("fence.png");
-    mole = LoadTexture("mole_4_angry.png");
-
-    while (!WindowShouldClose() )
-    {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-
-        switch (currentscreen)
-        {
-            case 1: mainscreen();
-            break;
-            case 2: choose_map();
-            break;
-            case 3: choose_difficulty();
-            break;
-            case 4: create_game(selected_map, difficulty);
-            break;
-        }
-        DrawText(TextFormat("screen %d  difficulty %d  map '%s'", currentscreen, difficulty, selected_map),
-         20, 20, 30, RED);
-        EndDrawing();
-    }
-
-    UnloadTexture(menuBg);
-    UnloadTexture(map_window);
-    UnloadTexture(difficulty_window);
-    for (int i = 0; i < 5; i++) UnloadTexture(mapBg[i]);
-    UnloadTexture(mole);                       // NEW: mole was never unloaded
-    CloseWindow();
-    return 0;
-}
-
-void mainscreen()
-{
-    DrawTexture(menuBg, 0, 0, WHITE);
-
-    Vector2 mouse = GetMousePosition();
-    Rectangle playarea        = {537, 360, 534, 107};
-    Rectangle scoresarea      = {537, 483, 534, 107};
-    Rectangle leaderboardarea = {537, 603, 534, 107};
-    Rectangle quitarea        = {537, 725, 534, 107};
-    Color bright = {255, 255, 255, 60};
-
-    if (CheckCollisionPointRec(mouse, playarea)) {
-        DrawRectangleRec(playarea, bright);
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) currentscreen = 2;
-    }
-    if (CheckCollisionPointRec(mouse, scoresarea)) {
-        DrawRectangleRec(scoresarea, bright);
-    }
-    if (CheckCollisionPointRec(mouse, leaderboardarea)) {
-        DrawRectangleRec(leaderboardarea, bright);
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) currentscreen = 5;
-    }
-    if (CheckCollisionPointRec(mouse, quitarea)) {
-        DrawRectangleRec(quitarea, bright);
-    }
-}
-
-void choose_map()
-{
-    DrawTexture(map_window, 0, 0, WHITE);
-
-    Vector2 mouse = GetMousePosition();
-
-    Rectangle areas[6] = {
-        {123,  246, 376, 267},   // 0 top-left     : night
-        {1114, 246, 376, 267},   // 1 top-right    : village
-        {612,  395, 376, 267},   // 2 center       : day
-        {123,  574, 376, 267},   // 3 bottom-left  : sunset
-        {1114, 574, 376, 267},   // 4 bottom-right : fence
-        {562,  712, 478,  86}    // 5 RANDOM
-    };
-    const char *names[5] = {"night", "village", "day", "sunset", "fence"};
-
-    Color glow = {255, 255, 255, 70};
-
-    for (int i = 0; i < 6; i++)
-    {
-        if (CheckCollisionPointRec(mouse, areas[i]))
-        {
-            DrawRectangleRec(areas[i], glow);
-
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-            {
-
-
-                int pick;
-                if (i==5){
-                    pick=GetRandomValue(0,4);
-                }
-                else{
-                    pick = i;
-                }
-                strcpy(selected_map, names[pick]);
-                printf("map: %s\n", selected_map);
-                currentscreen = 3;
-            }
-        }
-    }
-
-}
-
-void choose_difficulty()
-{
-    DrawTexture(difficulty_window, 0, 0, WHITE);
-
-    Vector2 mouse = GetMousePosition();
-
-    Rectangle areas[3] = {
-        {485, 298, 598, 154},    // 0 easy
-        {485, 482, 598, 155},    // 1 medium
-        {485, 665, 598, 158}     // 2 hard
-    };
-
-    Color glow = {255, 255, 255, 70};
-
-    for (int i = 0; i < 3; i++)
-    {
-        if (CheckCollisionPointRec(mouse, areas[i]))
-        {
-            DrawRectangleRec(areas[i], glow);
-
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-            {
-                difficulty = i + 1;          // 1 easy, 2 medium, 3 hard
-                build_holes(difficulty);
-                currentscreen = 4;
-                printf("difficulty: %d\n", difficulty);
-            }
-        }
-    }
-
-
-}
 void build_holes(int mode)
 {
     holeCount = 0;
@@ -302,6 +153,7 @@ void create_game(char map[100], int difficulty)
 
 
 }
+
 void draw_mole(int difficulty)
 {
     double now = GetTime();
@@ -314,13 +166,13 @@ void draw_mole(int difficulty)
         spawnTime = now;
     }
 
+    Texture2D mole = moleTex[difficulty - 1];   // NEW: pick the mole for this difficulty
+
     DrawTexture(mole,
                 holePos[activeHole].x - mole.width / 2,
                 holePos[activeHole].y - mole.height / 2,
                 WHITE);
 }
-
-/* ===================== NEW CODE BELOW ===================== */
 
 void check_hit()
 {
@@ -366,8 +218,25 @@ void game_over()
         scoreCount++;
     }
 
+    // NEW: keep adding the score to the file of this difficulty
+    FILE *fp = fopen(scoreFiles[difficulty - 1], "a");
+    if (fp != NULL)
+    {
+        fprintf(fp, "%s %d\n", player_name, score);
+        fclose(fp);
+    }
+
+    // NEW: also add it to player_scores.txt so display_score() in
+    // login_register.c (console option 4) still shows every score
+    fp = fopen("player_scores.txt", "a");
+    if (fp != NULL)
+    {
+        fprintf(fp, "%s %d\n", player_name, score);
+        fclose(fp);
+    }
+
     printf("GAME OVER! final score: %d\n", score);
 
     activeHole = -1;
-    currentscreen = 1;           // back to main menu (for now)
+    currentscreen = 6;           // CHANGED: was 1, now goes to game over screen
 }
