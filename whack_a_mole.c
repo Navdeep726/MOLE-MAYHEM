@@ -40,6 +40,7 @@ void mainscreen();
 void choose_map();
 void choose_difficulty();
 void draw_centered(const char *text, int cx, int y, int size, Color c);
+void hole_coordinate(int mode);
 
 /* MODULE 2: login and accounts */
 void choice(char *n);
@@ -51,7 +52,6 @@ int player_highest(char player[100]);
 /* MODULE 3: gameplay */
 void create_game(char map[100], int difficulty);
 void draw_mole(int difficulty);
-void hole_coordinate(int mode);
 void holes(int mode);
 void check_hit();
 void draw_hud();
