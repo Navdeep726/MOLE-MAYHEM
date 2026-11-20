@@ -20,7 +20,6 @@
 #include <raylib.h>
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
 
 typedef struct {      // structure to store player details
     char username[100];
@@ -46,7 +45,6 @@ void choice(char *n);
 int register_p(char *name);
 int login_p(char *name);
 void display_score(char name[100]);
-int player_highest(char player[100]);
 
 /* MODULE 3: gameplay */
 void create_game(char map[100], int difficulty);
@@ -64,7 +62,6 @@ void my_scores();
 void top3(char *file, char *player, ps best[3]);
 void load_leaderboard();
 void load_my_scores();
-int highest();
 
 /* ---------- GLOBAL VARIABLES ---------- */
 
@@ -96,9 +93,8 @@ float hard_radius = 46;
 
 /* MODULE 4: scores and leaderboard */
 int lastScore = 0;
-int scoreHistory[100];
-int scoreCount = 0;
 char *scoreFiles[3] = {"easy_scores.txt", "medium_scores.txt", "hard_scores.txt"};
+
 ps board[3][3];
 ps mine[3][3];
 
@@ -256,7 +252,6 @@ void choose_map()
                     pick = i;
                 }
                 strcpy(selected_map, names[pick]);
-                printf("map: %s\n", selected_map);
                 currentscreen = 3;
             }
         }
@@ -291,7 +286,6 @@ void choose_difficulty()
                 difficulty = i + 1;          // 1 easy, 2 medium, 3 hard
                 hole_coordinate(difficulty);
                 currentscreen = 4;
-                printf("difficulty: %d\n", difficulty);
             }
         }
     }
@@ -421,7 +415,7 @@ int login_p(char *name){
 void display_score(char name[100]){
     FILE *fp;
     char username[100];
-    int found=0,score,h_score;
+    int found=0,score;
     fp=fopen("player_scores.txt","r");
     if (fp==NULL){
         printf("unable to open file.");
@@ -429,10 +423,6 @@ void display_score(char name[100]){
     }
     printf("your previous scores are:\n");
     while(fscanf(fp," %99s %d",username,&score)==2){
-        h_score=score;
-        if(score>h_score){
-            h_score=score;
-        }
         if (strcmp(username,name)==0){
             printf("%d\n",score);
             found=1;
@@ -475,23 +465,6 @@ void choice(char *n){
         }
         
     }
-}
-
-/* Returns the highest score of one player from player_scores.txt. */
-int player_highest(char player[100]){
-    FILE *ptr=fopen("player_scores.txt","r");
-    ps p1;
-    int high_s=0;
-    if (ptr==NULL) return 0;        // file may not exist yet
-    while(fscanf(ptr,"%99s %d",p1.username,&p1.score)==2){
-        if(strcmp(player,p1.username)==0){
-            if(p1.score>high_s){
-                high_s=p1.score;
-            }
-        }
-    }
-    fclose(ptr);
-    return high_s;
 }
 
 /* ==================================================================
@@ -657,13 +630,10 @@ void check_hit()
     {
         score++;                 // hit!
         activeHole = -1;         // mole disappears, a new one spawns next frame
-        printf("hit! score: %d\n", score);
     }
     else
     {
         lives--;                 // missed
-        printf("miss! lives left: %d\n", lives);
-
         if (lives <= 0)
             game_over();
     }
@@ -680,13 +650,7 @@ void draw_hud()
    player_scores.txt, then opens the game over screen. */
 void game_over()
 {
-    lastScore = score;
-
-    if (scoreCount < 100)
-    {
-        scoreHistory[scoreCount] = score;   // store this game's score
-        scoreCount++;
-    }
+    lastScore = score;               // shown on the game over screen
 
     // add the score to the file of this difficulty
     FILE *fp = fopen(scoreFiles[difficulty - 1], "a");
@@ -704,8 +668,6 @@ void game_over()
         fprintf(fp, "%s %d\n", player_name, score);
         fclose(fp);
     }
-
-    printf("GAME OVER! final score: %d\n", score);
 
     activeHole = -1;
     currentscreen = 6;           // show the game over screen
@@ -899,47 +861,3 @@ void load_my_scores()
     for (int d = 0; d < 3; d++)
         top3(scoreFiles[d], player_name, mine[d]);
 }
-
-/* Console version: prints the top 3 scores in player_scores.txt. */
-int highest(){
-    FILE *ptr=fopen("player_scores.txt","r");
-    ps p1;
-    ps p2[3];
-    p2[0].score=0;
-    p2[1].score=0;
-    p2[2].score=0;
-    strcpy(p2[0].username,"---");   // empty places until scores are found
-    strcpy(p2[1].username,"---");
-    strcpy(p2[2].username,"---");
-    int temp;
-    char tempc[100];
-    if (ptr==NULL) return 0;        // file may not exist yet
-    while(fscanf(ptr,"%99s %d",p1.username,&p1.score)==2){
-        if (p2[0].score<p1.score){
-            p2[2].score=p2[1].score;
-            p2[1].score=p2[0].score;
-            p2[0].score=p1.score;
-            strcpy(p2[2].username,p2[1].username);
-            strcpy(p2[1].username,p2[0].username);
-            strcpy(p2[0].username,p1.username);
-
-        }
-        else if(p2[1].score<p1.score){
-            temp = p2[1].score;
-            p2[2].score=p2[1].score;
-            p2[1].score=p1.score;;
-            strcpy(p2[2].username,p2[1].username);
-            strcpy(p2[1].username,p1.username);
-        }
-        else if(p2[2].score<p1.score){
-            p2[2].score=p1.score;
-            strcpy(p2[2].username,p1.username);
-        }
-    }
-
-    fclose(ptr);
-    printf("%s %d %s %d %s %d",p2[0].username,p2[0].score,p2[1].username,p2[1].score,p2[2].username,p2[2].score);
-    return 0;
-    
-
-    }
