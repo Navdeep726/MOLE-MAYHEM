@@ -9,7 +9,7 @@
 /* functions of this module */
 void create_game(char map[100], int difficulty);
 void draw_mole(int difficulty);
-void hole_coordinate(int mode);
+
 void holes(int mode);
 void check_hit();
 void draw_hud();
@@ -38,53 +38,7 @@ int lives = 3;
 
 float hard_radius = 46;
 
-void hole_coordinates(int mode)
-{
-    holeCount = 0;
 
-    /* FIXED: added braces so holeCount++ runs for every hole */
-    if (mode == 1)   // easy: 6 holes
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 2; j++)
-            {
-                holePos[holeCount] = (Vector2){413.33f + i*386.67f, 500 + j*220};
-                holeCount++;
-            }
-        }
-    }
-    else if (mode == 2)   // medium: 9 holes
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                holePos[holeCount] = (Vector2){413.33f + i*386.67f, 463.33f + j*146.67f};
-                holeCount++;
-            }
-        }
-    }
-    else if (mode == 3)   // hard: 16 holes
-    {
-        /* FIXED: assign first, then increment (was writing to holePos[16]) */
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 2; j++){
-                holePos[holeCount] = (Vector2){397.5f + i*230, 430 + j*250};
-                holeCount++;
-            }
-            for (int k = 0; k < 2; k++){
-                 holePos[holeCount] = (Vector2){512.5f + i*230, 555 + k*250};
-                 holeCount++;
-            }
-        }
-    }
-
-    activeHole = -1;   // reset the mole whenever a new game is set up
-    score = 0;         // NEW: fresh score for every new game
-    lives = 3;         // NEW: fresh lives for every new game
-}
 
 void holes(int mode)
 {
@@ -212,11 +166,11 @@ void game_over()
 {
     lastScore = score;
 
-    if (scoreCount < 100)
-    {
-        scoreHistory[scoreCount] = score;   // store this game's score
-        scoreCount++;
-    }
+    // if (scoreCount < 100)
+    // {
+    //     scoreHistory[scoreCount] = score;   // store this game's score
+    //     scoreCount++;
+    // }
 
     // NEW: keep adding the score to the file of this difficulty
     FILE *fp = fopen(scoreFiles[difficulty - 1], "a");
