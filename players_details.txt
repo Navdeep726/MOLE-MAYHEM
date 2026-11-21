@@ -3,3 +3,5 @@ navdeep 1234 nvdc.grg@gmail.com
 pratyush ASDFGHJKL;' dfghia@gmail.com
 C:\raylib\w64devkit\bin\gcc.exe" "tempCodeRunnerFile.c" -o
 priyanshi 1234 pp2008@gmail.com
+harsh 1234 hh@gmail.com
+shaurya 1234 dd@gmail.com
