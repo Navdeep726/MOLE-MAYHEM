@@ -114,7 +114,6 @@ int main()
 
     InitWindow(1600, 900, "Whack-a-Mole");
     SetTargetFPS(60);
-    SetExitKey(KEY_NULL);                      // ESC no longer closes the window
 
     InitAudioDevice();                         // turn on sound (must come before loading music)
     bgMusic = LoadMusicStream("music.mp3");    // streamed from the file while it plays
