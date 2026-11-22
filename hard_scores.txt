@@ -7,3 +7,5 @@ khushi_is_a_diva 6
 khushi_is_a_diva 16
 khushi_is_a_diva 12
 khushi_is_a_diva 90
+priya 2
+priya 0
