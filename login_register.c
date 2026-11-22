@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <login_register.h>   // structures and function declarations
+#include "raylib.h"   // structures and function declarations
 
 /* CHANGED: main() is commented out because the game (main.c) now has the
    main() and calls choice() from there. A program can only have one main().
